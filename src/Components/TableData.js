@@ -1,20 +1,21 @@
 function TableData(props) {
   console.log(props);
   return (
-    <div>
+    <>
       {props.employeeList.map((result) => (
-        // <li className="list-group-item" key={result.id}>
-        //   <img alt={result.title} className="img-fluid" src={result.images.original.url} />
-        // </li>
         <tr>
-          <td>{result.picture.small}</td>
-          <td>{result.name.first}</td>
-          <td>employee phone</td>
-          <td>employee email</td>
-          <td>employee dob</td>
+          <td>
+            <img src={result.picture.medium} alt={result.name.first} />
+          </td>
+          <td>
+            {result.name.first} {result.name.last}
+          </td>
+          <td>{result.phone}</td>
+          <td>{result.email}</td>
+          <td>{result.dob.date}</td>
         </tr>
       ))}
-    </div>
+    </>
   );
 }
 
