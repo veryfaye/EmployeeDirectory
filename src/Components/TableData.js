@@ -2,11 +2,14 @@ import { useContext } from "react";
 import EmployeeContext from "../Utils/EmployeeContext";
 
 function TableData() {
-  const {employees} = useContext(EmployeeContext);
-  console.log(employees)
+  const { employees, filteredEmployees } = useContext(EmployeeContext);
+  let displayEmployees;
+  filteredEmployees.length > 0
+    ? (displayEmployees = filteredEmployees)
+    : (displayEmployees = employees);
   return (
     <>
-      {employees.map((result) => (
+      {displayEmployees.map((result) => (
         <tr className="classnamefortest" key={result.login.uuid}>
           <td>
             <img src={result.picture.medium} alt={result.name.first} />

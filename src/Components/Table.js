@@ -1,19 +1,7 @@
 import TableData from "./TableData";
-import API from "../Utils/API";
-import { useEffect, useState } from "react";
-import EmployeeContext from "../Utils/EmployeeContext";
 
 function Table() {
-  const [employees, setEmployees] = useState({});
-
-  useEffect(() => {
-    API.search()
-      .then((res) => setEmployees(res.data.results))
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <EmployeeContext.Provider value = {{employees}}>
     <div>
       <table>
         <thead>
@@ -26,11 +14,10 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          <TableData employeeList={employees} />
+          <TableData />
         </tbody>
       </table>
     </div>
-    </EmployeeContext.Provider>
   );
 }
 
