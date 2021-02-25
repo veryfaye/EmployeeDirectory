@@ -1,44 +1,37 @@
 import TableData from "./TableData";
 import API from "../Utils/API";
-import { Component } from "react";
+import { useEffect, useState } from "react";
+import EmployeeContext from "../Utils/EmployeeContext";
 
-class Table extends Component {
-  state = {
-    results: [],
-  };
+function Table() {
+  const [employees, setEmployees] = useState({});
 
-  componentDidMount() {
-    this.searchEmployees();
-  }
-  // API.search().then((res) => );
-  searchEmployees = () => {
+  useEffect(() => {
     API.search()
-    .then((res) => 
-    //console.log(res.data.results)
-    this.setState({ results: res.data.results })
-    );
-  };
+      .then((res) => setEmployees(res.data.results))
+      .catch((err) => console.log(err));
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-              <th>Date of Birth</th>
-            </tr>
-          </thead>
-          <tbody>
-            <TableData employeeList={this.state.results} />
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+  return (
+    <EmployeeContext.Provider value = {{employees}}>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Date of Birth</th>
+          </tr>
+        </thead>
+        <tbody>
+          <TableData employeeList={employees} />
+        </tbody>
+      </table>
+    </div>
+    </EmployeeContext.Provider>
+  );
 }
 
 export default Table;

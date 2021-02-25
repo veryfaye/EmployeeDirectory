@@ -1,9 +1,13 @@
-function TableData(props) {
-  console.log(props);
+import { useContext } from "react";
+import EmployeeContext from "../Utils/EmployeeContext";
+
+function TableData() {
+  const {employees} = useContext(EmployeeContext);
+  console.log(employees)
   return (
     <>
-      {props.employeeList.map((result) => (
-        <tr>
+      {employees.map((result) => (
+        <tr className="classnamefortest" key={result.login.uuid}>
           <td>
             <img src={result.picture.medium} alt={result.name.first} />
           </td>
