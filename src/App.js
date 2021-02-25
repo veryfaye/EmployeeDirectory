@@ -8,9 +8,9 @@ import EmployeeContext from "./Utils/EmployeeContext";
 
 function App() {
   const [employees, setEmployees] = useState([]);
-  const [filterEmployeesBy, setFilterEmployeesBy] = useState();
-  const [filteredEmployees, setFilteredEmployees] = useState([]);
-  let sortedEmployees = employees;
+  const [filterText, setFilterText] = useState(employees);
+  const [filteredEmployees, setFilteredEmployees] = useState(employees);
+  const [sort, setSort] = useState({ name: 0 });
   // useEffect for API Call on page load
   useEffect(() => {
     API.search()
@@ -24,51 +24,53 @@ function App() {
       setFilteredEmployees(
         employees.filter((employee) => {
           let name = employee.name.first + " " + employee.name.last;
-          return name.toLowerCase().indexOf(filterEmployeesBy) > -1;
+          return name.toLowerCase().indexOf(filterText) > -1;
         })
       );
     }
-  }, [employees, filterEmployeesBy]);
+  }, [employees, filterText]);
+
+  // useEffect for sorting the employee list
+  useEffect(() => {
+    if (employees.length > 0) {
+      if (sort.name === 1) {
+        setFilteredEmployees(
+          filteredEmployees.sort((a, b) => {
+            return a.name.first.localeCompare(b.name.first);
+          })
+        );
+      } else if (sort.name === -1) {
+        setFilteredEmployees(
+          filteredEmployees.sort((a, b) => {
+            return b.name.first.localeCompare(a.name.first);
+          })
+        );
+      } else {
+        return;
+      }
+    }
+  }, [employees.length, filteredEmployees, sort]);
 
   // function for handling the change in input in the navbar
-  const handleInputChange = (e) => {
+  const handleInputChange = () => {
     const input = document
       .getElementById("employee-search")
       .value.toLowerCase();
-    setFilterEmployeesBy(input);
+    setFilterText(input);
   };
 
-  const handleSort = (e) => {
-    filteredEmployees.length > 0
-      ? (sortedEmployees = filteredEmployees)
-      : (sortedEmployees = employees);
-    switch (e.target.id) {
-      case "header-name":
-        sortedEmployees.sort((a, b) => {
-          return a.name.first.localeCompare(b.name.first);
-        });
-        break;
-      case "header-phone":
-        sortedEmployees.sort((a, b) => {
-          return a.phone.localeCompare(b.phone);
-        });
-        break;
-      case "header-email":
-        sortedEmployees.sort((a, b) => {
-          return a.email.localeCompare(b.email);
-        });
-        break;
-      default:
-        break;
+  // function for handling the sorting
+  const handleSort = () => {
+    if (sort.name === 0) {
+      setSort({ name: 1 });
+    } else {
+      setSort({ name: -sort.name });
     }
-    console.log(sortedEmployees);
-    filteredEmployees.length > 0
-      ? setFilteredEmployees(sortedEmployees)
-      : setEmployees(sortedEmployees);
+    console.log(sort);
   };
 
   return (
-    <div className="App">
+    <div className="App container">
       <EmployeeContext.Provider
         value={{ employees, filteredEmployees, handleInputChange, handleSort }}
       >

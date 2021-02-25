@@ -6,8 +6,8 @@ function Table() {
   const { handleSort } = useContext(EmployeeContext);
   return (
     <div>
-      <table>
-        <thead>
+      <table className="table table-striped">
+        <thead className="thead-dark">
           <tr>
             <th>Image</th>
             <th id="header-name" onClick={handleSort}>
