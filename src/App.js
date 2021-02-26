@@ -66,7 +66,6 @@ function App() {
     } else {
       setSort({ name: -sort.name });
     }
-    console.log(sort);
   };
 
   return (
@@ -77,7 +76,7 @@ function App() {
         <Header />
         <Navbar />
         {employees.length > 0 ? (
-          <Table employeeList={employees} />
+          <Table />
         ) : (
           <div></div>
         )}
